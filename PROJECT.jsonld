@@ -1,0 +1,215 @@
+{
+  "@context": "https://schema.org/",
+  "@type": "Project",
+  "name": "Global Autonomous EC Engine",
+  "identifier": "etzhayyim-project-ec",
+  "status": "Planning",
+  "description": "An autonomous global EC engine that handles procurement (arbitrage), sales, shipping, settlement, and support using TWF Go native actors.",
+  "hasPart": [
+    {
+      "@type": "Strategy",
+      "name": "Global Arbitrage & Brand Scaling",
+      "url": "STRATEGY.jsonld"
+    },
+    {
+      "@type": "CreativeWork",
+      "name": "Operational Activities",
+      "url": "activities.jsonld"
+    },
+    {
+      "@type": "CreativeWork",
+      "name": "Capabilities",
+      "url": "capabilities.jsonld"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "name": "Crawler Engine",
+      "identifier": "etzhayyim-performer-sys-etzhayyim-actors-pba7d22f-svc-apqc-1-1-crawler-engine",
+      "url": "/performers/actors/etzhayyim-performer-sys-etzhayyim-actors-pba7d22f-svc-apqc-1-1-crawler-engine"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "name": "Logistics Coordinator",
+      "identifier": "etzhayyim-performer-sys-etzhayyim-actors-pba7d22f-svc-apqc-5-4-logistics-coordinator",
+      "url": "/performers/actors/etzhayyim-performer-sys-etzhayyim-actors-pba7d22f-svc-apqc-5-4-logistics-coordinator"
+    }
+  ],
+  "potentialAction": {
+    "@type": "Action",
+    "name": "Launch okaimono.etzhayyim.com",
+    "agent": "etzhayyim-performer-sys-etzhayyim-actors-pba7d22f-svc-apqc-2-0-autonomous-sales",
+    "description": "Deploy a SvelteKit-based global EC storefront integrated with autonomous actors."
+  },
+  "rdfUnifiedDocuments": {
+    "@type": "Dataset",
+    "name": "Unified top-level RDF/JSON-LD documents",
+    "description": "Consolidated from project top-level *.jsonld files except PROJECT.jsonld.",
+    "documents": [
+      {
+        "fileName": "STRATEGY.jsonld",
+        "content": {
+          "@context": "https://schema.org/",
+          "@type": "Strategy",
+          "name": "Autonomous EC Strategy",
+          "description": "Maximize global arbitrage opportunities and brand equity by combining a proprietary storefront (okaimono.etzhayyim.com) with major marketplace integrations (Amazon, eBay).",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Hybrid Marketplace Presence",
+              "description": "Leverage Amazon/eBay (SP-API) for traffic and trust while using okaimono.etzhayyim.com (SvelteKit/Shopify) for brand control and higher margins."
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": "Real-time Arbitrage Logic",
+              "description": "AI actors scan global prices using Keepa API and custom scrapers to identify high-margin 'sedori' opportunities and execute automated buy-sell loops."
+            },
+            {
+              "@type": "ListItem",
+              "position": 3,
+              "name": "Logistics Automation",
+              "description": "Integrate with ShipStation and local 3PL providers (Logiless) to ensure hands-off fulfillment and returns management."
+            },
+            {
+              "@type": "ListItem",
+              "position": 4,
+              "name": "SaaS Integration Stack",
+              "description": "Core stack: Keepa (Procurement), Stripe (Settlement), ShipStation (Logistics), Clerk (Identity), Intercom (Support)."
+            }
+          ]
+        }
+      },
+      {
+        "fileName": "activities.jsonld",
+        "content": {
+          "@context": "https://schema.org/",
+          "@type": "OperationalActivity",
+          "name": "Autonomous EC Lifecycle (OV-5b)",
+          "description": "The sequence of activities performed by AI actors to sustain the EC business.",
+          "step": [
+            {
+              "@type": "Action",
+              "name": "Ingest Market Data",
+              "participant": "Crawler Engine",
+              "instrument": "Alibaba Wholesale, Amazon Scraper",
+              "result": "Unified Market Data (UNISPSC Classified)"
+            },
+            {
+              "@type": "Action",
+              "name": "Identify Arbitrage",
+              "participant": "Procurement Actor",
+              "instrument": "Keepa API, Mercari Scraper",
+              "result": "Purchase Intent"
+            },
+            {
+              "@type": "Action",
+              "name": "Execute Purchase",
+              "participant": "Procurement Actor",
+              "instrument": "Settlement Engine",
+              "result": "Physical Goods in Transit to 3PL"
+            },
+            {
+              "@type": "Action",
+              "name": "Create Listings",
+              "participant": "Sales Manager Actor",
+              "instrument": "okaimono.etzhayyim.com, Amazon SP-API",
+              "result": "Active Product Pages"
+            },
+            {
+              "@type": "Action",
+              "name": "Fulfill Order",
+              "participant": "Logistics Coordinator",
+              "instrument": "ShipStation API",
+              "result": "Delivered Product"
+            },
+            {
+              "@type": "Action",
+              "name": "Support & Feedback",
+              "participant": "Support Agent",
+              "instrument": "Omni-channel Support Platform",
+              "result": "Resolved Tickets, Customer Reviews"
+            }
+          ]
+        }
+      },
+      {
+        "fileName": "capabilities.jsonld",
+        "content": {
+          "@context": "https://schema.org/",
+          "@type": "Capability",
+          "name": "EC Automation Capabilities",
+          "description": "Definition of actors and services required for the autonomous global EC engine.",
+          "hasPart": [
+            {
+              "@type": "Service",
+              "name": "Procurement Actor (APQC 4.1)",
+              "identifier": "etzhayyim-performer-sys-etzhayyim-actors-pba7d22f-svc-apqc-4-1-procurement-manager",
+              "description": "Scans marketplaces for arbitrage opportunities and executes purchases."
+            },
+            {
+              "@type": "Service",
+              "name": "Sales Manager Actor (APQC 2.0)",
+              "identifier": "etzhayyim-performer-sys-etzhayyim-actors-pba7d22f-svc-apqc-2-0-autonomous-sales",
+              "description": "Manages listings on shopping.etzhayyim.com and external marketplaces."
+            },
+            {
+              "@type": "Service",
+              "name": "Crawler Engine (APQC 1.1)",
+              "identifier": "etzhayyim-performer-sys-etzhayyim-actors-pba7d22f-svc-apqc-1-1-crawler-engine",
+              "description": "Massively parallel market data ingestion from global marketplaces."
+            },
+            {
+              "@type": "Service",
+              "name": "Logistics Coordinator (APQC 5.4)",
+              "identifier": "etzhayyim-performer-sys-etzhayyim-actors-pba7d22f-svc-apqc-5-4-logistics-coordinator",
+              "description": "Coordinates with shipping carriers and 3PL providers."
+            },
+            {
+              "@type": "Service",
+              "name": "Settlement Engine (APQC 9.4.1)",
+              "identifier": "etzhayyim-performer-sys-etzhayyim-actors-pba7d22f-svc-apqc-9-4-1-payment-gateway-stripe",
+              "description": "Handles global payments, currency conversion, and fraud detection via Stripe."
+            },
+            {
+              "@type": "Service",
+              "name": "Support Agent (APQC 12.1)",
+              "identifier": "etzhayyim-performer-sys-etzhayyim-actors-pba7d22f-svc-apqc-12-1-customer-service-agent",
+              "description": "Autonomous customer support via multi-channel AI agents."
+            }
+          ]
+        }
+      },
+      {
+        "fileName": "scheduler.jsonld",
+        "content": {
+          "@context": [
+            "https://schema.org/",
+            {
+              "etzhayyim": "https://etzhayyim.com/schemas/",
+              "capabilities": "etzhayyim:capabilities",
+              "survivalIndicators": "etzhayyim:survivalIndicators",
+              "scheduler": "etzhayyim:scheduler",
+              "milestones": "etzhayyim:milestones",
+              "blockers": "etzhayyim:blockers",
+              "dependsOn": {
+                "@id": "etzhayyim:dependsOn",
+                "@type": "@id"
+              },
+              "ingestKey": "etzhayyim:ingestKey",
+              "window": "etzhayyim:window",
+              "valueUpdatedAt": "etzhayyim:valueUpdatedAt"
+            }
+          ],
+          "@type": "CreativeWork",
+          "name": "Global Autonomous EC Engine Scheduler",
+          "identifier": "etzhayyim-project-ec/scheduler",
+          "description": "Project schedule (milestones) and blockers.",
+          "dateCreated": "2026-02-15T04:25:26+00:00",
+          "milestones": [],
+          "blockers": []
+        }
+      }
+    ]
+  }
+}
