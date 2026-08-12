@@ -1,0 +1,8 @@
+node_modules/
+dist/
+*.tsbuildinfo
+
+# npm cannot install this closure (see docs/adr/0001) — pnpm-lock.yaml is the
+# committed lockfile. A package-lock.json here would be a half-resolved artifact
+# of a failed run.
+package-lock.json
