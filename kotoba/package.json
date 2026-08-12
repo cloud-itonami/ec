@@ -17,5 +17,15 @@
     "@etzhayyim/sdk-mock": "git+https://github.com/etzhayyim/com-etzhayyim-sdk-mock.git#c857ff9be5310bf433bfe1e8d3c0f677e213d667",
     "typescript": "^5.6.0",
     "vitest": "^4.1.0"
+  },
+  "pnpm": {
+    "overrides": {
+      "@etzhayyim/ipfs": "git+https://github.com/kotoba-lang/ipfs.git#671888e08cc42b297c668b6124cf7c5b9d1676f0",
+      "@etzhayyim/pqh": "git+https://github.com/kotoba-lang/pqh.git#ab728717804ec18dafee7262fa83352ffbc1aaf1"
+    }
+  },
+  "overrides": {
+    "@etzhayyim/ipfs": "git+https://github.com/kotoba-lang/ipfs.git#671888e08cc42b297c668b6124cf7c5b9d1676f0",
+    "@etzhayyim/pqh": "git+https://github.com/kotoba-lang/pqh.git#ab728717804ec18dafee7262fa83352ffbc1aaf1"
   }
 }
