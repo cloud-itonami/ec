@@ -4,6 +4,13 @@
 live as AT Protocol PDS records and whose orders settle on-chain in USDC,
 routed through TitheRouter's constitutional 10% Public-Fund split.
 
+> The tithe's status here is **open**. Superproject ADR-2608281200 separates
+> charter concepts out of cloud-itonami actors into an etzhayyim-only layer,
+> and `ec` is a cloud-itonami repo. What that means for this split — injectable
+> policy, etzhayyim-side wrapper, or unchanged — changes what this repository
+> *is*, so it is an owner decision and is not being settled inside a port. See
+> ADR-0002 § Open.
+
 The name does not say what it does, so this file says it: two letters, subject
 plane, no prefix. If you are looking for the storefront *UI*, it is not here —
 this repo is the record and settlement layer underneath one.
@@ -11,8 +18,11 @@ this repo is the record and settlement layer underneath one.
 - **Tier**: 2 (function-split per ADR-2606011400, on-chain-only)
 - **Substrate posture**: ADR-2605172000 — AT PDS + IPFS + Base L2. No Stripe,
   no RisingWave, no fiat processor.
-- **Value transfer**: only through `@etzhayyim/sdk`'s `donate()`; app code never
-  touches viem or USDC directly (ADR-2605172100).
+- **Value transfer**: today, only through `@etzhayyim/sdk`'s `donate()`; app
+  code never touches viem or USDC directly (ADR-2605172100). That SDK's
+  dependency closure is frozen and unbuildable (see Status), so the seam is
+  moving to `kotoba-lang/pay`'s `PayRail` — same shape, no frozen dependency,
+  still no key held by app code.
 
 ## Status: seed extracted, not yet buildable
 
@@ -20,11 +30,20 @@ This repo was extracted verbatim from `etzhayyim/root`'s
 `60-apps/etzhayyim-project-ec` (see `migration.edn`). Two things follow from
 that, and both are load-bearing:
 
-1. **The TypeScript dependency closure does not install today.** The cause is
-   external to this repo and is documented in
-   [`docs/adr/0001-typescript-dependency-closure-is-unbuildable.md`](docs/adr/0001-typescript-dependency-closure-is-unbuildable.md).
-   `npm test` and `tsc --noEmit` therefore cannot be run. What *can* be run is
-   in [`docs/operator-quickstart.md`](docs/operator-quickstart.md).
+1. **The TypeScript dependency closure cannot be installed, and cannot be
+   repaired.** ADR-0001 diagnosed the cause correctly — `@etzhayyim/checkpointer`
+   floats two of its own dependencies at `#main`, and one of those repos went
+   Clojure — and then recorded a successful `pnpm install`. That install was
+   real but came from a **warm pnpm store**; from a cold one it fails at the
+   next step, because checkpointer's `prepare` runs a nested `npm install` that
+   this repo's `overrides` cannot reach. And there is nothing to repin to: the
+   next commit to checkpointer's `package.json` deletes it.
+
+   [`docs/adr/0002-…`](docs/adr/0002-the-closure-is-dead-and-the-repair-was-a-warm-store.md)
+   has the measurement and supersedes ADR-0001's Consequences. **If you need
+   `ec` to run, the path is the port to `kotoba-lang/pay` +
+   `pay.rail.base-l2`**, not a lockfile fix — `ec`'s `SettlementExecutor` and
+   `PayRail`'s `-pay!` are already the same shape.
 2. **The Charter §2(a)-(h) review is still open.** `MIGRATION-TODO.md` holds the
    checklist. An automated scan on 2026-05-21 found no Stripe / RisingWave /
    Kysely / Prisma / GA4 / Meta Pixel imports, but the TRANSFORM classification
