@@ -6,6 +6,13 @@ dependency pins described in
 transcribed, not paraphrased. If a step here does not reproduce for you, that is
 a bug in this document — please fix it rather than working around it silently.
 
+> ⚠️ **2026-08-28: §1 no longer reproduces, and cannot be made to.** The install
+> it transcribes succeeded on a warm pnpm store; from a cold one the closure
+> fails and there is no revision to repair it with. See
+> [ADR-0002](adr/0002-the-closure-is-dead-and-the-repair-was-a-warm-store.md).
+> The sentence above is the reason this notice exists rather than the document
+> quietly staying wrong.
+
 Environment used: macOS (darwin 25.3.0), Node v26.3.0, pnpm 10.26.2.
 
 ## 0. What you cannot do: `npm install`
@@ -30,36 +37,63 @@ still fail, because the restriction fires in the nested invocation.
 This is an npm-version property, not a repo defect: npm 10.9.8 predates the
 policy. **Use pnpm**, which is what the rest of this document assumes.
 
-## 1. Install
+## 1. Install — this does not work, and cannot be made to
+
+**Superseded by [ADR-0002](adr/0002-the-closure-is-dead-and-the-repair-was-a-warm-store.md).**
+This section used to transcribe a successful install:
 
 ```console
 $ cd kotoba && pnpm install
-+ @etzhayyim/sdk-mock 0.1.0
-+ typescript 5.9.3
-+ vitest 4.1.10
 Done in 11.3s using pnpm v10.26.2
 ```
 
-You will see one warning:
+That output was real, and it is not reproducible on a machine that has never
+installed this closure before. It came from a pnpm store that already held
+prepared artifacts from earlier attempts. On a cold store:
 
-```
-Ignored build scripts: @signalapp/libsignal-client@0.94.4.
-```
-
-That is expected and harmless here. libsignal is an *optional* dependency of the
-SDK, it is a native module whose build script pnpm declines to run unattended,
-and nothing in `ec` imports it. Do not run `pnpm approve-builds` to silence it
-unless you actually need Signal transport.
-
-If this step instead dies with:
-
-```
-ERR_PNPM_MISSING_PACKAGE_NAME  Can't install
-git+https://github.com/kotoba-lang/ipfs.git#main: Missing package name
+```console
+$ pnpm install --store-dir /tmp/empty-store
+ ERR_PNPM_PREPARE_PACKAGE  Failed to prepare git-hosted package fetched from
+ "https://codeload.github.com/kotoba-lang/checkpointer/tar.gz/63586c4f…":
+ @etzhayyim/checkpointer@0.1.0-alpha npm-install: `npm install`
+ Exit status 1
 ```
 
-then the `overrides` / `pnpm.overrides` block has been removed from
-`kotoba/package.json`. Restore it — the reason it has to be there is ADR-0001.
+`@etzhayyim/checkpointer`'s `prepare` runs a **nested `npm install` inside the
+fetched git package**, which resolves checkpointer's own floating `#main` refs
+and knows nothing about this repo's `overrides`. And there is no fixed revision
+to move to: the next commit to checkpointer's `package.json` after the pinned
+`63586c4f` deletes the file (it went Clojure-only).
+
+So the steps below — typecheck, test, the SDK smoke — **cannot be reached from
+a clean machine.** They are left in place because they describe what the code
+does and they still run for anyone whose store happens to be warm; they are no
+longer a walkthrough anyone can follow.
+
+**If you need `ec` to run**, the path is the port to `kotoba-lang/pay` +
+`pay.rail.base-l2` described in ADR-0002 § Decision, not a lockfile fix.
+
+### Measuring this yourself
+
+`pnpm install` on your own machine is **not** a cold check — it will replay
+prepared git dependencies from your store. Point it at an empty one:
+
+```bash
+git archive HEAD:kotoba | tar -x -C /tmp/ec-cold
+cd /tmp/ec-cold && pnpm install --store-dir /tmp/ec-empty-store
+```
+
+### The error you will see first
+
+Before the one above, on pnpm >= 10.26, you will hit:
+
+```
+ERR_PNPM_GIT_DEP_PREPARE_NOT_ALLOWED  ... needs to execute build scripts but is
+not in the "onlyBuiltDependencies" allowlist.
+```
+
+These are git deps with `prepare: tsc`, so they need an allowlist in
+`pnpm-workspace.yaml`. Adding one gets you to the real failure, not past it.
 
 ## 2. Typecheck
 
